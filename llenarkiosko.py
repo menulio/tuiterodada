@@ -48,6 +48,8 @@ def write_file(filename, contents):
 	except:
 		print('Error escribiendo fichero: ', filename)
 	f.close()
+
+DIR_AEDE = 'aede'
 	
 try:
 	page = get_page('http://www.aede.es/publica/Periodicos_Asociados.asp')
@@ -58,8 +60,8 @@ try:
 	for x in range(0, len(links)):
 		url = links[x].decode();
 		# Evitamos guardar enlaces a la propia pgina
-		if url.find('aede') < 0:
-			filename = get_file_name(url, '/home/pi/tuiterodada/aede')
+		if url.find(DIR_AEDE) < 0:
+			filename = get_file_name(url, DIR_AEDE)
 			write_file(filename, get_page(url))
 except:
 	print('Error Fatal, siempre haciendo tontadas: ', sys.exc_info()[0])

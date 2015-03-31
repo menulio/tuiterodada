@@ -99,9 +99,12 @@ def get_message(bolsa):
 	while True:
 		# Ahora saco cada recorte uno tras otro. 
 		worz = random.choice(bolsa)
-		if not_number.match(worz):
+		if not_number.match(worz) and worz.find('_') == -1 and worz.find('0') == -1 and worz.find('1') == -1 and worz.find('2') == -1 and worz.find('3') == -1 and worz.find('4') == -1 and worz.find('5') == -1 and worz.find('6') == -1 and worz.find('7') == -1 and worz.find('8') == -1 and worz.find('9') == -1:
 			# Copio concienzudamente en el orden en que han salido de la bolsa. 
 			message += worz
+			pos = bolsa.index(worz)
+			del bolsa[pos]
+
 			if len(message) < 140:
 				message += " "
 			else:
@@ -109,6 +112,8 @@ def get_message(bolsa):
 		
 	message = message[0: message.rindex(" ")]
 	return message
+
+DIR_AEDE = 'aede/'
 	
 # Palabras a excluir, Tzara las habra dejado, pero yo soy mainstream
 HTML_TAGS = ["abbr", "acronym", "address", "applet", "area", "article", "aside", "audio", "base", "basefont", "bdi", "bdo",
@@ -121,7 +126,9 @@ HTML_TAGS = ["abbr", "acronym", "address", "applet", "area", "article", "aside",
 "span", "strike", "strong", "style", "sub", "summary", "sup", "table", "tbody", "td", "textarea", "tfoot", "th",
 "thead", "time", "title", "tr", "track", "tt", "ul", "var", "video", "wbr", "com", "document", "nbsp", "aacute", 
 "eacute", "iacute", "oacute", "uacute", "page", "www", "target", "true", "false", "zoneid", "b", "c", "d", "f", "g", 
-"h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "class", "teaser", "headline", "href","crm", "alt", "thumb", "jpg", "cookies", "frameborder"]
+"h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "class", "teaser", "headline", "href","crm", "alt", "thumb", 
+"jpg", "cookies", "frameborder", "javascript", "php", "edition", "down", "widget", "ordf", "metha", "js", "aspx", "gif", "comment", 
+"imgs", "amp", "rgb", "runner", "banners"]
 # Palabras a excluir, Tzara las habra dejado, pero yo soy mainstream	
 HTML_ATTRS = ["azimuth", "angle", "left-side" "far-left", "left", "center-left", "center", "center-right", "right", "far-right", "right-side", 
 "behind", "leftwards", "rightwards", "inherit", "aural", "background-attachment", "scroll", "fixed", "background-color", "transparent",
@@ -154,7 +161,7 @@ CONSUMER_SECRET = '9ihdMaFf22gpSdftSpCti8g1FhNAAEo4IuIQo9HVTAjS47tB1c'
 
 try:
 	# Voy al kiosko
-	periodicos = [ f for f in listdir('/home/pi/tuiterodada/aede/') if path.isfile(path.join('/home/pi/tuiterodada/aede/',f)) ]
+	periodicos = [ f for f in listdir(DIR_AEDE) if path.isfile(path.join(DIR_AEDE,f)) ]
 	# Entro en tuiter
 	MY_TWITTER_CREDS = path.expanduser('~/.tuiterodada_credentials')
 	
@@ -166,7 +173,7 @@ try:
 	# ...lleva un rato
 	
 	while True:
-		filename = "/home/pi/tuiterodada/aede/"
+		filename = DIR_AEDE
 		# Cojo un diario
 		filename += random.choice(periodicos)
 		file_content = read_file(filename)
@@ -187,6 +194,7 @@ try:
 				if len(bolsa) > 0:
 					# Agtola suavemente. Ahora saco cada recorte uno tras otro. Copio concienzudamente en el orden en que han salido de la bolsa. 
 					twitter.statuses.update(status=get_message(bolsa))
+					# print(get_message(bolsa))
 					break
 		
 except:
