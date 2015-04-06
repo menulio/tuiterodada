@@ -101,14 +101,22 @@ def get_message(bolsa):
 		worz = random.choice(bolsa)
 		if not_number.match(worz) and worz.find('_') == -1 and worz.find('0') == -1 and worz.find('1') == -1 and worz.find('2') == -1 and worz.find('3') == -1 and worz.find('4') == -1 and worz.find('5') == -1 and worz.find('6') == -1 and worz.find('7') == -1 and worz.find('8') == -1 and worz.find('9') == -1:
 			# Copio concienzudamente en el orden en que han salido de la bolsa. 
-			message += worz
-			pos = bolsa.index(worz)
-			del bolsa[pos]
+			lastworz = ""
 
-			if len(message) < 140:
-				message += " "
-			else:
-				break;
+			try:
+				lastworz = message[message.rindex(" ")]
+			except:
+				print(lastworz)
+
+			if lastworz != worz:
+				message += worz
+				pos = bolsa.index(worz)
+				del bolsa[pos]
+
+				if len(message) < 140:
+					message += " "
+				else:
+					break
 		
 	message = message[0: message.rindex(" ")]
 	return message
@@ -156,8 +164,8 @@ HTML_ATTRS = ["azimuth", "angle", "left-side" "far-left", "left", "center-left",
 "bottom", "text-bottom", "visibility", "hidden", "collapse", "volume", "silent", "x-soft", "soft", "medium", "loud", "x-loud", "white-space", "pre", 
 "nowrap", "pre-wrap", "http", "src", "img", "pre-line", "widows", "width", "word-spacing", "z-index"]
 
-CONSUMER_KEY = 'sVPIUgtS4jorwCJbrHIlacLRO'
-CONSUMER_SECRET = '9ihdMaFf22gpSdftSpCti8g1FhNAAEo4IuIQo9HVTAjS47tB1c'
+CONSUMER_KEY = 'ojete'
+CONSUMER_SECRET = 'ojete'
 
 try:
 	# Voy al kiosko
@@ -194,7 +202,7 @@ try:
 				if len(bolsa) > 0:
 					# Agtola suavemente. Ahora saco cada recorte uno tras otro. Copio concienzudamente en el orden en que han salido de la bolsa. 
 					twitter.statuses.update(status=get_message(bolsa))
-					# print(get_message(bolsa))
+					#print(get_message(bolsa))
 					break
 		
 except:
